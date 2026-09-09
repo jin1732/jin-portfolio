@@ -11,11 +11,11 @@
 >## 2. 설계 및 뼈대 잡기 (HTML)
 - **시맨틱 마크업(Semantic Markup) 이해 및 적용**
 - **HTML5**: 웹사이트의 뼈대 구성
-- <header>, <nav> : 상단 메뉴 및 네비게이션
-- <main>, <section> : 주요 콘텐츠 영역 구분
-- <footer> : 저작권 및 연락처 정보
-- <h1>`~`<h6> : 제목 계층 구조
-- <p> : 본문 문단 작성
+- header, nav : 상단 메뉴 및 네비게이션
+- main, section : 주요 콘텐츠 영역 구분
+- footer : 저작권 및 연락처 정보
+- h1~h6 : 제목 계층 구조
+- p : 본문 문단 작성
 
 ```html
 <!DOCTYPE html>
