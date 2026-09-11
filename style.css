@@ -61,20 +61,69 @@ section {
 
 /* 섹션마다 배경색을 다르게 해서 구분해보기 */
 #about { background-color: #f4f4f4; }
+
+/* 섹션 전체 여백 */
 #projects { 
     background-color: #fff; 
-    padding: 20px;
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
-.repo-container {
+/* 헤더 부분 (글자와 링크 양옆 배치) */
+.projects-header{
     display: flex;
-    flex-wrap: wrap; /* 2개 넘어가면 다음 줄로 */
-    gap: 16px;       /* 카드 사이 간격 */
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
 }
 
-.repo-card{
-    flex: 1 1 calc(50% - 8px); /* 50% 너비에서 gap 절반을 뺀 값 */
-    border: 1px solid #d0d7de;
-    border-radius: 6px;
+/* 카드 컨테이너 (2개씩 배치하는 핵심!) */
+.projects-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* 개별 카드 스타일 */
+.projects-card{
+    flex: 1 1 calc(50% - 8px);   /* 한 줄에 2개씩 */
+    border: 1px solid #d0d7de; /* 테두리 */
+    border-radius: 6px;          /* 모서리 둥글게 */
     padding: 16px;
+    display: flex;
+    flex-direction: column;      /* 위아래로 배치(열) */
+    justify-content: space-between;
+    min-height: 100px;
+}
+
+/* 카드 내부 상세 스타일 */
+.repo-name {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.badg {
+    font-size: 12px;
+    border: 1px solid #d0d7de;
+    border-radius: 10px;
+    padding: 2px 8px;
+    color: #57606a;
+}
+
+/* 언어 표시 점(Dot) */
+.lang-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+.html { background-color: #e34c26; } /* HTML은 주황색 */
+.python { background-color: #3572A5; } /* Python은 파란색 */
+
+.lang-text {
+    font-size: 12px;
+    color: #57606a;
 }
