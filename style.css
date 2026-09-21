@@ -49,7 +49,7 @@ nav a:hover {
 
 /* 섹션 스타일 */
 section {
-    padding: 80px 20px;  /* 위아래 80px, 좌우 20px 여백 */
+    padding: 80pxs 20px;  /* 위아래 80px, 좌우 20px 여백 */
     min-height: 100vh; /* 최소 높이를 화면 높이만큼으로 설정 */
     display: flex;     /* 내용을 정렬하기 위해 flex 사용 */
     flex-direction: column; /* 내용을 세로로 쌓기 */
