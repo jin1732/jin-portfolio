@@ -150,3 +150,66 @@ section {
 - **선택자 (Selector)**: 스타일을 적용할 HTML 요소를 선택하는 방법 (예: 태그 선택자 header, 전체 선택자 *).
 - **가상 클래스 (Pseudo-class)**: 요소의 특정 상태에 스타일을 적용할 때 사용 (예: :hover는 마우스를 올렸을 때의 상태).
 - **단위 (Units)**: px: 고정된 픽셀 단위. rem: 루트(최상위) 요소의 글자 크기를 기준으로 하는 상대적 단위 (반응형 디자인에 유리).
+
+
+### ② Flexbox를 활용한 레이아웃 설계 
+- Flexbox 활용: display: flex를 사용하여 요소들을 가로/세로로 자유롭게 배치.
+- 2x2 카드 배열: flex-wrap: wrap과 calc() 함수를 사용하여 화면 크기에 맞는 반응형 2열 구조 생성.
+- 정밀한 크기 계산: width: calc(50% - 16px)를 사용하여 카드 사이의 간격을 유지하며 정확히 2등분함.
+- 정렬과 간격: justify-content와 gap 속성을 사용하여 카드 사이의 일정한 여백 구현.
+
+```html
+                <div class="projects-card">
+                    <div class="card- top">
+                        <a href="#" class="repo-name">my-docker2</a>
+                        <span class="badg">Public</span>
+                    </div>
+                    <div class="card-bottom">
+                        <span class="lang-dot html"></span>
+                        <span class="lang-text">HTML</span>
+                    </div>
+                </div>
+```
+```css
+/* 헤더 부분 (글자와 링크 양옆 배치) */
+.projects-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+/* 카드 컨테이너 (2개씩 배치하는 핵심!) */
+.projects-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* 개별 카드 스타일 */
+.projects-card{
+    flex: 1 1 calc(50% - 8px);   /* 한 줄에 2개씩 */
+    border: 1px solid #d0d7de; /* 테두리 */
+    border-radius: 6px;          /* 모서리 둥글게 */
+    padding: 16px;
+    display: flex;
+    flex-direction: column;      /* 위아래로 배치(열) */
+    justify-content: space-between;
+    min-height: 100px;
+}
+
+/* 카드 내부 상세 스타일 */
+.repo-name {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.badg {
+    font-size: 12px;
+    border: 1px solid #d0d7de;
+    border-radius: 10px;
+    padding: 2px 8px;
+    color: #57606a;
+}
+```
