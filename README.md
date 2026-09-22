@@ -74,7 +74,7 @@
         </section>
     </main>
     <footer> <!-- 연락처 및 저작권 정보 -->
-        <P>&copy; 2024. [손희진]. All rights reserved.</P>
+        <p>&copy; 2024. [손희진]. All rights reserved.</p>
         <p>Email: your-email@example.com</p>
     </footer>
 </body>
@@ -213,3 +213,61 @@ section {
     color: #57606a;
 }
 ```
+
+### 학습한 주요 용어
+- **Flexbox (플렉스박스)**: 복잡한 레이아웃을 쉽고 유연하게 배치할 수 있도록 돕는 CSS의 1차원 레이아웃 모델.
+- **flex-wrap**: 컨테이너 안의 요소들이 화면을 넘어갈 때, 다음 줄로 자연스럽게 줄바꿈을 할지 결정하는 속성 (wrap 적용 시 줄바꿈됨).
+- **justify-content**: 메인 축(주로 가로 방향)을 기준으로 요소들을 어떻게 정렬할지 결정하는 속성 (예: space-between, center 등).
+- **gap**: Flex 요소들 사이의 여백(간격)을 일정하게 설정해 주는 속성으로, 복잡한 margin 계산을 대체할 수 있어 매우 유용함.
+- **calc() 함수**: CSS 내부에서 사칙연산(+, -, *, /)을 수행하여 너비나 높이 등의 값을 동적으로 계산하는 함수 (예: calc(50% - 16px)).
+
+
+### ③ 반응형 웹 디자인 (Responsive Web Design) 및 미디어 쿼리
+- Media Query 적용: @media (max-width: 480px)를 사용하여 모바일 화면(480px 이하)에 맞는 레이아웃으로 변경했습니다.
+- 모바일 최적화: 모바일 환경에서 글자 크기(font-size)와 여백(padding)을 줄이고, 내비게이션 메뉴를 세로(column)로 배치하여 가독성을 높였습니다.
+- 반응형 테스트: Chrome 개발자 도구(DevTools)의 Device Mode를 활용하여 400px 등 다양한 모바일 기기 해상도에서 레이아웃이 깨지지 않는지 확인 및 디버깅을 진행했습니다.
+
+```css
+@media (max-width: 768px) {
+    .projects-container {
+        flex-direction: column;
+    }
+    .projects-card {
+        flex: 1 1 100%;
+    }
+    .projects-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px
+    }
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 16px;
+    }
+    nav ul {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .projects-card {
+        padding: 16px;
+    }
+    .projects-header h2 {
+        font-size: 20px;
+    }
+    .projects-header a {
+        font-size: 14px;
+    }
+}
+```
+### 학습한 주요 용어
+- **반응형 웹 (Responsive Web)**: PC, 태블릿, 스마트폰 등 접속하는 기기의 화면 크기에 맞춰 레이아웃이 자동으로 변하는 웹사이트 디자인 기법.
+- **미디어 쿼리 (Media Query)**: 화면의 너비(width)나 해상도에 따라 다른 CSS 스타일을 적용할 수 있게 해주는 CSS 문법 (예: `@media (max-width: 480px)`).
+- **중단점 (Breakpoint)**: 미디어 쿼리에서 레이아웃이나 스타일이 바뀌는 기준이 되는 화면의 픽셀 값 (예: 480px, 768px 등).
+- **뷰포트 (Viewport)**: 사용자의 기기 화면에서 실제 웹페이지가 표시되는 영역. (HTML <head> 태그 안에 <meta name="viewport">를 설정해야 모바일에서 정상적으로 반응형이 작동함).
+- **개발자 도구 (DevTools)**: 브라우저(Chrome 등)에서 제공하는 도구로, 'Device Mode'를 통해 다양한 모바일 기기의 화면 크기(예: 400px)를 시뮬레이션하고 실시간으로 CSS를 테스트할 수 있음.
