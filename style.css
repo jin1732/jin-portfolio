@@ -117,9 +117,20 @@ section {
         align-items: flex-start;
         gap: 8px
     }
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 480px) {
+    header {
+        padding: 16px;
+    }
+    nav ul {
+        flex-direction: column;
+        gap: 8px;
+    }
     .projects-card {
         padding: 16px;
     }

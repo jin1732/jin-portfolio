@@ -160,9 +160,9 @@ section {
 
 ```html
                 <div class="projects-card">
-                    <div class="card- top">
+                    <div class="card-top">
                         <a href="#" class="repo-name">my-docker2</a>
-                        <span class="badg">Public</span>
+                        <span class="badge">Public</span>
                     </div>
                     <div class="card-bottom">
                         <span class="lang-dot html"></span>
