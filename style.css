@@ -50,7 +50,7 @@ nav a:hover {
 /* 섹션 스타일 */
 section {
     width: 100%;
-    max-width: 900px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 80px 40px;  /* 위아래 80px, 좌우 40px 여백 */
     box-sizing: border-box;
@@ -59,7 +59,43 @@ section {
     align-items: center;    /* 가로 기준 가운데 정렬 */
     background: #fff;
 }
+#hero {
+    /* 1. 배경 설정: 1번 이미지 경로를 정확히 입력하세요 */
+    background-image: url('image/hero.png'); 
+    background-repeat: no-repeat;
+    background-position: center bottom; /* 이미지를 아래쪽에 배치 */
+    background-size: contain; /* 이미지 전체가 다 보이도록 */
+    
+    /* 2. 높이 및 레이아웃 */
+    min-height: 800px; /* 공간을 넓게 확보 */
+    display: flex;
+    align-items: flex-start; /* 텍스트를 위쪽으로 배치 */
+    padding-top: 80px; /* 상단 네비게이션과의 간격 */
+    background-color: #ffffff; /* 배경색 */
+}
+.hero-container {
+    width: 100%;
+    max-width: 1200px; /* 화면이 너무 커져도 텍스트가 너무 옆으로 가지 않게 제한 */
+    margin: 0 auto; /* 가운데 정렬 */
+    padding: 0 40px; /* 양옆 여백 */
+}
 
+.hero-text {
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+}
+
+.hero-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #555;
+}
 /* 섹션마다 배경색을 다르게 해서 구분해보기 */
 #about { background-color: #f4f4f4; }
 
