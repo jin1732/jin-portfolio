@@ -51,53 +51,131 @@ nav a:hover {
 section {
     width: 100%;
     max-width: 1400px;
-    margin: 0 auto;
-    padding: 80px 40px;  /* 위아래 80px, 좌우 40px 여백 */
+    margin: 0 auto 32px;
+    padding: 56px 40px 64px;
     box-sizing: border-box;
-    display: flex;     /* 내용을 정렬하기 위해 flex 사용 */
-    flex-direction: column; /* 내용을 세로로 쌓기 */
-    align-items: center;    /* 가로 기준 가운데 정렬 */
-    background: #fff;
-}
-#hero {
-    /* 1. 배경 설정: 1번 이미지 경로를 정확히 입력하세요 */
-    background-image: url('image/hero.png'); 
-    background-repeat: no-repeat;
-    background-position: center bottom; /* 이미지를 아래쪽에 배치 */
-    background-size: contain; /* 이미지 전체가 다 보이도록 */
-    
-    /* 2. 높이 및 레이아웃 */
-    min-height: 800px; /* 공간을 넓게 확보 */
     display: flex;
-    align-items: flex-start; /* 텍스트를 위쪽으로 배치 */
-    padding-top: 80px; /* 상단 네비게이션과의 간격 */
-    background-color: #ffffff; /* 배경색 */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* 중요: 가운데 말고 위에서 시작 */
+    background: #fff;
+    border-radius: 16px;
+}
+
+section h2 {
+    margin: 0 0 32px;
+}
+
+.section-title {
+    text-align: center;      /* 글자를 중앙으로 */
+    font-size: 1.5rem;       /* 크기를 크게 (원하는 대로 조절 가능) */
+    font-weight: 800;        /* 아주 두껍게 */
+    margin-top: 100px;       /* 위쪽 섹션과의 간격 */
+    margin-bottom: 50px;     /* 아래쪽 본문과의 간격 */
+    letter-spacing: 2px;     /* 글자 사이 간격을 살짝 벌려 고급스럽게 */
+    text-transform: uppercase; /* 소문자로 써도 대문자로 표시되게 함 */
+    color: #333;             /* 글자 색상 */
+}
+
+#hero {
+    padding: 110px 40px 130px;  /* 아래 여백을 더 크게 */
+    background-color: #ffffff; /* 배경색 (원하는 색으로 변경 가능) */
 }
 .hero-container {
-    width: 100%;
-    max-width: 1200px; /* 화면이 너무 커져도 텍스트가 너무 옆으로 가지 않게 제한 */
-    margin: 0 auto; /* 가운데 정렬 */
-    padding: 0 40px; /* 양옆 여백 */
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: left; /* 텍스트를 왼쪽 정렬 (중앙 정렬을 원하면 center로 변경) */
+    padding: 0 20px;
 }
 
 .hero-text {
-    text-align: left; /* 텍스트 왼쪽 정렬 */
+    font-size: 3.1rem;    /* 텍스트 크기를 크게 키움 */
+    font-weight: 600;     /* 두껍게 */
+    line-height: 1.3;     /* 줄 간격 */
+    margin-bottom: 60px;  /* 이미지 그룹과의 간격 */
+    letter-spacing: -1px; /* 글자 간격을 살짝 좁혀서 세련되게 */
+    color: #5a5a5a;   /* 진한 회색 */
 }
 
-.hero-text h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    font-weight: bold;
-    color: #333;
+.point-color {
+    color: #e9686f;       /* 원하는 포인트 색상 (예: 파란색) */
+    font-weight: 700;
+    margin-left: 10px;    /* 디자이너 단어와 이름 사이 간격 */
 }
 
-.hero-text p {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #555;
+/* 이미지 2개 가로 배치 */
+.hero-image-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  transform: scale(1.13);
+  transform-origin: center top;
 }
+
+.hero-image-group img {
+    width: calc(50% - 1px); /* 간격을 제외한 딱 절반 크기 */
+    height: auto;            /* 이미지 비율 유지 */
+    object-fit: cover;       /* 이미지가 찌그러지지 않게 */
+}
+
 /* 섹션마다 배경색을 다르게 해서 구분해보기 */
-#about { background-color: #f4f4f4; }
+#about {
+    padding: 36px 40px 54px;
+}
+.about-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px; /* 좌우 여백 */
+}
+
+.section-title {
+  font-size: 2.5rem;   /* 기존 5rem 기준 약 15% 감소 */
+  font-weight: 700;
+  color: #65748e;       /* 원하는 색상 */
+  text-align: center;
+  margin-bottom: 3rem;
+  letter-spacing: -0.02em;
+}
+/* 가로 배치를 위한 플렉스 박스 */
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr; /* 한 줄 한 칸 */
+  row-gap: -10px; /* 텍스트와 이미지 사이 간격 */
+}
+/* 텍스트 박스: 왼쪽에서 적당한 너비 차지 */
+.about-text-box {
+  max-width: 760px;
+  margin-left: -4px;   /* 기존처럼 살짝 왼쪽 */
+  margin-top: 30px;    /* 텍스트를 아래로 내리기 */
+  position: relative;
+  z-index: 2;          /* 겹칠 때 텍스트가 위로 */
+}
+
+.about-text-box p {
+  font-size: 1.3rem;     /* 기존보다 2px 키우기 (예: 32 -> 34) */
+  line-height: 1.6;
+}
+
+.about-image-box {
+  margin-top: -40px;   /* 이미지를 위로 올리기 */
+  position: relative;
+  z-index: 1;
+}
+
+.about-main-img {
+  display: block;
+  width: 110%;
+  height: auto;
+  margin-left: -5%;
+}
+
+#skills {
+    padding: 48px 40px 56px;
+}
+
+#works {
+    padding: 48px 40px 56px;
+}
 
 /* 4. WORKS 이미지 크기 조절 (이미지가 너무 작게 나오지 않게) */
 .works-item img {
@@ -254,6 +332,10 @@ section {
 .lang-text {
     font-size: 12px;
     color: #57606a;
+}
+
+#contact {
+    padding: 48px 40px 56px;
 }
 
 /* Contact 폼 스타일 */
