@@ -15,16 +15,17 @@ async function getRepos() {
         displayRepos(repos);
     } catch (error) {
         console.error("에러 발생:", error);
-        document.getElementById('loading').innerText = "데이타불러오지 못했습니다.";
+        const loadingElement = document.getElementById('loading');
+        if (loadingElement) {
+        loadingElement.innerText = "데이터를 불러오지 못했습니다.";
+        }
     }
 }
 
 // 화면에 프로젝트를 그려주는 함수
 function displayRepos(repos) {
     const projectGrid = document.getElementById('project-grid');
-    const loadingElement = document.getElementById('loading');
-
-    if (loadingElement) loadingElement.style.display = 'none';
+    if (!projectGrid) return;
 
     projectGrid.innerHTML = '';
 
@@ -36,8 +37,8 @@ function displayRepos(repos) {
 
         // 3. 카드 내부에 들어갈 내용 작성
         card.innerHTML = `
-            <h3>${repo.name}<h3>
-            <p>${repo.description || '설명이 없습니다.'}<p>
+            <h3>${repo.name}</h3>
+            <p>${repo.description || '설명이 없습니다.'}</p>
             <a href="${repo.html_url}" target="_blank">자세히 보기</a>
         `;
         // 4. 완성된 카드를 project-grid 안에 넣기
