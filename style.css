@@ -1,3 +1,18 @@
+/* 기본 테마 (라이트 모드) */
+:root {
+    --bg-color: #f9f9f9;
+    --section-bg: #ffffff;
+    --text-color: #414141;
+    --card-bg: #ffffff;
+}
+
+/* 다크 테마 */
+body.dark-mode {
+    --bg-color: #1a1a1a;
+    --section-bg: #252525;
+    --text-color: #f0f0f0;
+    --card-bg: #333333;
+}
 
 * {
     margin: 0;
@@ -10,11 +25,11 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: var(--bg-color);
 }
 
 header {
-    background: #333;
+    background: #6c6c6c;
     color: #fff;
     padding: 1rem 2rem;
     /* Flexbox 추가 */
@@ -24,7 +39,7 @@ header {
 }
 
 nav {
-    background-color: #333;
+    background-color: #6c6c6c;
     padding: 1rem;
     text-align: center;
 }
@@ -38,12 +53,11 @@ nav ul {
 nav a {
     color: #fff;
     text-decoration: none;
-    font-weight: bold;
 }
 
 /* 마우스를 올렸을 때 효과 */
 nav a:hover {
-    color: #ffcc00;      /* 색상 변경 */
+    color: #e9686f;      /* 색상 변경 */
     text-decoration: underline;
 }
 
@@ -58,7 +72,7 @@ section {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start; /* 중요: 가운데 말고 위에서 시작 */
-    background: #fff;
+    background: var(--section-bg);
     border-radius: 16px;
 }
 
@@ -74,12 +88,12 @@ section h2 {
     margin-bottom: 50px;     /* 아래쪽 본문과의 간격 */
     letter-spacing: 2px;     /* 글자 사이 간격을 살짝 벌려 고급스럽게 */
     text-transform: uppercase; /* 소문자로 써도 대문자로 표시되게 함 */
-    color: #333;             /* 글자 색상 */
+    color: var(--text-color);             /* 글자 색상 */
 }
 
 #hero {
     padding: 110px 40px 130px;  /* 아래 여백을 더 크게 */
-    background-color: #ffffff; /* 배경색 (원하는 색으로 변경 가능) */
+    background-color: var(--section-bg); /* 배경색 (원하는 색으로 변경 가능) */
 }
 .hero-container {
     max-width: 1200px;
@@ -94,7 +108,7 @@ section h2 {
     line-height: 1.3;     /* 줄 간격 */
     margin-bottom: 60px;  /* 이미지 그룹과의 간격 */
     letter-spacing: -1px; /* 글자 간격을 살짝 좁혀서 세련되게 */
-    color: #5a5a5a;   /* 진한 회색 */
+    color: var(--text-color);   /* 진한 회색 */
 }
 
 .point-color {
@@ -170,7 +184,7 @@ section h2 {
 }
 
 #skills {
-  background: #fff;
+  background: var(--section-bg);
   padding: 10px 20px 100px;
 }
 /* 카드 3개 나란히 */
@@ -221,7 +235,7 @@ section h2 {
 
 #works {
   padding: 20px 20px 120px;
-  background: #fff;
+  background: var(--section-bg);
 }
 
 .works-grid {
@@ -265,15 +279,15 @@ section h2 {
 }
 
 .work-info {
-  padding-top: 18px;
+  padding-top: 12px;
   text-align: center;
 }
 
 .work-info p {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.6;
-  color: #444;
+  color: var(--text-color);
 }
 
 /* 섹션 전체 여백 */
@@ -324,7 +338,7 @@ section h2 {
   padding: 30px;
   border: 1px solid #e1e4e8;
   border-radius: 15px;
-  background: #fff;
+  background: var(--section-bg);
   transition: all 0.3s ease; /* 움직임과 그림자 효과 */
   display: flex;
   flex-direction: column;
@@ -403,7 +417,7 @@ section h2 {
 
 .lang-text {
     font-size: 12px;
-    color: #57606a;
+    color: var(--text-color);
 }
 
 #contact {
@@ -429,7 +443,7 @@ section h2 {
 
 #contact-form button {
     padding: 12px;
-    background-color: #333;
+    background-color: #6c6c6c;
     color: white;
     border: none;
     border-radius: 8px;
@@ -438,7 +452,7 @@ section h2 {
 
 /* Footer 스타일 */
 footer {
-    background: #333;
+    background: #6c6c6c;
     color: white;
     padding: 40px 20px;
     text-align: center;
