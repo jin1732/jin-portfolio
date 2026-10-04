@@ -1,9 +1,13 @@
+html {
+    scroll-behavior: smooth;
+}
 /* 기본 테마 (라이트 모드) */
 :root {
     --bg-color: #f9f9f9;
     --section-bg: #ffffff;
     --text-color: #414141;
     --card-bg: #ffffff;
+    --section-tit: #65748e;
 }
 
 /* 다크 테마 */
@@ -12,6 +16,7 @@ body.dark-mode {
     --section-bg: #252525;
     --text-color: #f0f0f0;
     --card-bg: #333333;
+    --section-tit: #9779c1;
 }
 
 * {
@@ -39,26 +44,91 @@ header {
 }
 
 nav {
-    background-color: #6c6c6c;
-    padding: 1rem;
-    text-align: center;
-}
-
-nav ul {
     display: flex;
-    list-style: none;
-    gap: 20px;
+    align-items: center;           /* 세로 높이 중앙 맞춤 */
+    padding: 15px 5%;              /* 상하 15px, 좌우 5% 여백 */
+    background-color: var(--header-bg); /* 배경색 */
 }
 
-nav a {
-    color: #fff;
-    text-decoration: none;
+/* 2. .nav-links (ul 태그): 메뉴 항목들을 감싸는 상자 */
+.nav-links {
+    display: flex;                 /* 메뉴 글자들을 가로로 나열 */
+    list-style: none;              /* 점(•) 제거 */
+    gap: 25px;                     /* 메뉴 글자 사이 간격 */
+    margin: 0;
+    padding: 0;
 }
 
-/* 마우스를 올렸을 때 효과 */
-nav a:hover {
-    color: #e9686f;      /* 색상 변경 */
+/* 3. 메뉴 링크 스타일 */
+.nav-links a {
+    color: #ffffff;      /* 글자 색상 */
+    text-decoration: none;         /* 밑줄 제거 */
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+/* 마우스 올렸을 때 */
+.nav-links a:hover {
+    color: #e9686f;
     text-decoration: underline;
+}
+
+/* 2. 햄버거 버튼 스타일 (여기에 추가) */
+.menu-toggle {
+    display: none; /* PC에서는 안 보이게 */
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #ffffff;
+    margin: 4px 0;
+    transition: 0.3s;
+}
+
+@media (max-width: 768px) {
+    /* 1. 햄버거 버튼: 모바일에서 보이게 설정 */
+    .menu-toggle, .hamburger { 
+        display: flex !important; 
+        flex-direction: column;
+        cursor: pointer;
+        gap: 5px;
+        z-index: 1001; /* 메뉴보다 위에 있어야 클릭이 잘 됩니다 */
+    }
+
+    /* 햄버거 막대기 모양 */
+    .menu-toggle span, .hamburger span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: white; 
+    }
+
+    /* 2. 메뉴 리스트: 우측 60%만 차지하게 설정 */
+    .nav-links {
+        display: none; /* 평소엔 숨김 */
+        flex-direction: column;
+        position: absolute;
+        top: 60px;      /* 헤더 높이에 맞춰 조절 */
+        right: 0;       /* 우측 끝에 붙임 */
+        width: 60%;     /* ⭐ 화면의 60% 너비 */
+        height: auto;   /* 내용만큼 높이 조절 */
+        background-color: rgba(85, 85, 85, 0.98); /* 배경색 (약간 투명) */
+        padding: 20px 0;
+        z-index: 1000;
+        text-align: center;
+        
+        /* 입체감을 위한 그림자와 둥근 모서리 */
+        box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
+        border-radius: 0 0 0 15px; 
+    }
+
+    /* 3. 활성화 상태: 버튼 클릭 시 나타남 */
+    .nav-links.active {
+        display: flex !important;
+    }
 }
 
 /* 섹션 스타일 */
@@ -71,9 +141,17 @@ section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* 중요: 가운데 말고 위에서 시작 */
     background: var(--section-bg);
     border-radius: 16px;
+    opacity: 0;
+    transform: translateY(30px); /* 30px 아래에서 시작 */
+    transition: all 0.8s ease-out; /* 0.8초 동안 부드럽게 변함 */
+}
+
+/* 2. JS가 'show' 클래스를 붙였을 때 상태: 제자리로 오고 투명도 해제 */
+section.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 section h2 {
@@ -145,7 +223,7 @@ section h2 {
 .section-title {
   font-size: 2.5rem;   /* 기존 5rem 기준 약 15% 감소 */
   font-weight: 700;
-  color: #65748e;       /* 원하는 색상 */
+  color: var(--section-tit);       /* 원하는 색상 */
   text-align: center;
   margin-bottom: 3rem;
   letter-spacing: -0.02em;
@@ -168,6 +246,7 @@ section h2 {
 .about-text-box p {
   font-size: 1.3rem;     /* 기존보다 2px 키우기 (예: 32 -> 34) */
   line-height: 1.6;
+  color: var(--text-color);
 }
 
 .about-image-box {
@@ -222,13 +301,13 @@ section h2 {
   margin: 0 0 14px;
   font-size: 1.45rem;
   font-weight: 700;
-  color: #222;
+  color: var(--text-color);
 }
 
 .skill-card p {
   margin: 0;
   font-size: 1.1rem;
-  color: #222;
+  color: var(--text-color);
   text-align: center;
   white-space: nowrap;
 }
@@ -318,7 +397,7 @@ section h2 {
 #loading {
   text-align: center;
   margin: 20px 0 30px;
-  color: #666;
+  color: var(--text-color);
   font-size: 1rem;
 }
 
@@ -353,7 +432,9 @@ section h2 {
     margin-bottom: 10px;
     color: #4e97c1;
 }
-
+.project-card p {
+  color: var(--text-color);
+}
 /* 마우스 올렸을 때 효과 (호버) */
 .project-card:hover {
     transform: translateY(-10px); /* 위로 살짝 올라가는 움직임 */
@@ -412,42 +493,76 @@ section h2 {
     border-radius: 50%;
     margin-right: 4px;
 }
-.html { background-color: #e34c26; } /* HTML은 주황색 */
-.python { background-color: #3572A5; } /* Python은 파란색 */
 
 .lang-text {
     font-size: 12px;
     color: var(--text-color);
 }
 
+/* 1. 섹션 전체 설정 및 애니메이션 준비 */
 #contact {
-  margin-top: 30px; /* 섹션 간의 간격을 강제로 벌려줍니다 */
-  padding: 10px 0 80px;
+    margin-top: 50px; /* 간격을 조금 더 넓혔습니다 */
+    padding: 10px 0 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 내부 요소들 중앙 정렬 */
+    
+    /* 애니메이션 효과 (HTML에 class="contact-section"이 없으므로 #contact로 변경) */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
 }
 
-/* Contact 폼 스타일 */
+/* 스크롤 시 나타나는 효과 */
+#contact.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#contact p {
+    color: var(--text-color);
+    font-size: 17px; /* 설명글 1px 확대 */
+    margin-bottom: 10px;
+}
+
+/* 2. Contact 폼 스타일 (사이즈 15% 확대 적용) */
 #contact-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px; /* 간격 확대 (15px -> 20px) */
     width: 100%;
-    max-width: 500px; /* 폼은 너무 넓으면 안 예쁘니까요 */
+    max-width: 600px; /* 폼 너비 확대 (500px -> 600px) */
     margin-top: 30px;
 }
 
-#contact-form input, #contact-form textarea {
-    padding: 12px;
+/* 3. 입력창 사이즈 및 폰트 확대 */
+#contact-form input, 
+#contact-form textarea {
+    padding: 15px; /* 상자 높이 확대 (12px -> 15px) */
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 10px;
+    background-color: var(--section-bg);
+    color: var(--text-color);
+    font-size: 17px; /* 폰트 1~2px 확대 */
+    font-family: inherit; /* 폰트 일관성 유지 */
 }
 
+/* 4. 보내기 버튼 사이즈 및 폰트 확대 */
 #contact-form button {
-    padding: 12px;
+    padding: 16px; /* 버튼 높이 확대 (12px -> 16px) */
     background-color: #6c6c6c;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
+    font-size: 18px; /* 버튼 글씨 확대 */
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+#contact-form button:hover {
+    background-color: #444;
+    transform: translateY(-2px);
 }
 
 /* Footer 스타일 */
@@ -493,4 +608,18 @@ footer {
   .hero-text, .main-title {
     font-size: 28px !important;
   }
+}
+
+@media (max-width: 768px) {
+    /* 일반 모드와 다크 모드 모두에서 1열로 강제 고정 */
+    #project-grid, 
+    .project-container { 
+        grid-template-columns: 1fr !important; /* 1fr로 변경 */
+        display: grid;
+    }
+
+    .project-card {
+        width: 100% !important;
+        box-sizing: border-box; /* 패딩 때문에 삐져나가는 것 방지 */
+    }
 }
