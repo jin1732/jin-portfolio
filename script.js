@@ -76,16 +76,26 @@ function displayRepos(repos) {
 getRepos()
 
 const contactForm = document.getElementById('contact-form');
+
+// 폼이 존재할 때만 실행하도록 감싸줍니다.
 if(contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         
+        // 1. 이메일 형식을 검사하는 정규식
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
         if(name === "" || email === "") {
+            // 이름이나 이메일이 비어있을 때
             alert("이름과 이메일을 모두 입력해주세요!");
+        } else if (!emailPattern.test(email)) {
+            // 이메일 형식이 올바르지 않을 때
+            alert("올바른 이메일 형식을 입력해주세요! (예: user@mail.com)");
         } else {
-            alert("메시지가 성공적으로 전송되었습니다! (시뮬레이션)");
+            // 모든 조건이 통과되었을 때
+            alert("메시지가 성공적으로 전송되었습니다!");
             contactForm.reset();
         }
     });
@@ -114,4 +124,19 @@ const navLinks = document.querySelector('.nav-links');
 menuToggle.addEventListener('click', () => {
     // nav-links에 active 클래스를 넣었다 뺐다(toggle) 합니다.
     navLinks.classList.toggle('active');
+});
+
+const scrollTopBtn = document.getElementById("scroll-top");
+
+window.addEventListener('scroll', () => {
+    // 스크롤 값이 300보다 크면 보이고, 작으면 숨김
+    if (window.scrollY > 300) {
+        scrollTopBtn.style.display = "block";
+    } else {
+        scrollTopBtn.style.display = "none";
+    }
+});
+
+scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
 });

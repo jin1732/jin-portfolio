@@ -623,3 +623,17 @@ footer {
         box-sizing: border-box; /* 패딩 때문에 삐져나가는 것 방지 */
     }
 }
+
+#scroll-top {
+    display: none;      /* 처음엔 숨김 */
+    position: fixed;    /* 화면에 고정 */
+    bottom: 30px;       /* 하단에서 30px */
+    right: 30px;        /* 우측에서 30px */
+    z-index: 1000;      /* 다른 요소보다 맨 위로 */
+    padding: 10px 15px;
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
