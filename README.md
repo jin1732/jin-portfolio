@@ -271,3 +271,191 @@ section {
 - **중단점 (Breakpoint)**: 미디어 쿼리에서 레이아웃이나 스타일이 바뀌는 기준이 되는 화면의 픽셀 값 (예: 480px, 768px 등).
 - **뷰포트 (Viewport)**: 사용자의 기기 화면에서 실제 웹페이지가 표시되는 영역. (HTML <head> 태그 안에 <meta name="viewport">를 설정해야 모바일에서 정상적으로 반응형이 작동함).
 - **개발자 도구 (DevTools)**: 브라우저(Chrome 등)에서 제공하는 도구로, 'Device Mode'를 통해 다양한 모바일 기기의 화면 크기(예: 400px)를 시뮬레이션하고 실시간으로 CSS를 테스트할 수 있음.
+
+
+>## 4. 동적 기능 구현 (JavaScript)
+
+### DOM 조작 및 이벤트 바인딩
+- DOM 제어: document.querySelector를 사용하여 HTML 요소를 선택하고, 클릭이나 스크롤 이벤트에 따라 화면을 동적으로 변화시켰습니다.
+- 이벤트 리스너: addEventListener를 활용하여 햄버거 메뉴 클릭, 스크롤 시 네비게이션 바 스타일 변경, '맨 위로 가기' 버튼 표시 등을 구현했습니다.
+- 스크롤 애니메이션: Intersection Observer API 또는 스크롤 이벤트를 활용하여 화면에 요소가 나타날 때 서서히 등장하는 효과를 적용했습니다.
+
+```javascript
+// 1. 햄버거 메뉴 토글 (모바일 네비게이션)
+const menuToggle = document.querySelector('.menu-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active'); // 클릭 시 메뉴 표시/숨김
+});
+
+// 2. 맨 위로 가기 버튼 (스크롤 이벤트)
+const scrollTopBtn = document.getElementById("scroll-top");
+
+window.addEventListener('scroll', () => {
+    // 300px 이상 스크롤 시 버튼 표시
+    if (window.scrollY > 300) {
+        scrollTopBtn.style.display = "block";
+    } else {
+        scrollTopBtn.style.display = "none";
+    }
+});
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        // 요소가 화면에 50% 이상 보일 때 'show' 클래스 추가
+        if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+        }
+    });
+});
+
+// 모든 section 태그를 관찰 대상으로 등록
+const sections = document.querySelectorAll('section');
+sections.forEach((el) => observer.observe(el));
+```
+### 학습한 주요 용어
+- **DOM (Document Object Model)**: HTML 문서의 구조를 나무(Tree) 형태로 표현하여 자바스크립트가 제어할 수 있게 만든 모델.
+- **이벤트 리스너 (Event Listener)**: 클릭, 스크롤, 입력 등 사용자의 동작을 감지하여 특정 함수를 실행시키는 장치.
+- **화살표 함수 (Arrow Function)**: () => {} 형태로 함수를 간결하게 표현하는 최신 자바스크립트 문법.
+
+>## 5. 데이터 연동 및 비동기 처리 (API)
+
+### GitHub API 연동
+- 비동기 통신: fetch API를 사용하여 GitHub 저장소 데이터를 실시간으로 불러왔습니다.
+- 데이터 가공: 불러온 JSON 데이터를 forEach() 메서드를 사용하여 카드 형태의 HTML 구조로 변환하고 화면에 렌더링했습니다.
+- 예외 처리: try...catch 문을 사용하여 데이터를 불러오는 중 발생할 수 있는 에러(네트워크 오류 등)를 처리하고, 로딩 중 상태를 화면에 표시했습니다.
+
+```javascript
+// 비동기 통신 (fetch API)
+async function getRepos() {
+    // fetch API를 이용해 GitHub 서버에 데이터를 요청함
+    const response = await fetch(apiUrl);
+    const repos = await response.json(); // 응답 데이터를 JSON 형식으로 변환
+    
+    displayRepos(repos); // 가져온 데이터를 화면 그리기 함수로 전달
+}
+
+// 데이터 가공 및 렌더링 (forEach/map)
+function displayRepos(repos) {
+    const projectGrid = document.getElementById('project-grid');
+    projectGrid.innerHTML = ''; // 기존 내용을 비움
+
+    // 데이터 배열을 순회하며(forEach) 각 프로젝트당 하나의 카드를 생성
+    repos.forEach(repo => {
+        const card = document.createElement('div');
+        card.className = 'project-card'; // CSS 스타일 적용을 위한 클래스 부여
+
+        // 데이터를 HTML 구조에 바인딩
+        card.innerHTML = `
+            <h3>${repo.name}</h3>
+            <p>${repo.description || '설명이 없습니다.'}</p>
+            <a href="${repo.html_url}" target="_blank">자세히 보기</a>
+        `;
+        projectGrid.appendChild(card); // 완성된 카드를 화면(Grid)에 추가
+    });
+}
+
+// 예외 처리 및 로딩 상태 관리 (try...catch)
+async function getRepos() {
+    try {
+        // 성공 시 실행되는 구역
+        const response = await fetch(apiUrl);
+        const repos = await response.json();
+
+        // 로딩 메시지 제거
+        const loadingElement = document.getElementById('loading');
+        if (loadingElement) loadingElement.remove();
+
+        displayRepos(repos);
+    } catch (error) {
+        // 에러 발생 시(네트워크 오류 등) 실행되는 구역
+        console.error("에러 발생:", error);
+        const loadingElement = document.getElementById('loading');
+        if (loadingElement) {
+            loadingElement.innerText = "데이터를 불러오지 못했습니다.";
+        }
+    }
+}
+```
+### 학습한 주요 용어
+- **API (Application Programming Interface)**: 서로 다른 프로그램이 데이터를 주고받기 위한 약속이나 통로.
+- **비동기 처리 (Asynchronous)**: 특정 작업이 끝날 때까지 기다리지 않고 다음 코드를 실행하여 웹사이트의 멈춤 현상을 방지하는 방식.
+- **async/await**: 비동기 코드를 마치 동기 코드처럼 읽기 쉽게 작성할 수 있게 해주는 문법.
+- **JSON (JavaScript Object Notation)**: 데이터를 주고받을 때 사용하는 가벼운 텍스트 형식.
+
+
+>## 6. 고급 기능 및 상태 관리
+
+### ① 다크 모드 및 상태 유지
+- CSS 변수 활용: :root에 정의된 색상 변수를 자바스크립트로 조작하여 다크/라이트 테마를 전환했습니다.
+- LocalStorage: 사용자가 설정한 테마 모드를 브라우저에 저장하여, 페이지를 새로고침하거나 다시 방문해도 설정이 유지되도록 구현했습니다.
+
+### ② 폼 유효성 검사 (Form Validation)
+- 정규표현식 (RegExp): 이메일 입력란에 올바른 형식(@, . 포함)이 입력되었는지 실시간으로 검사하는 로직을 구현했습니다.
+- 사용자 피드백: 필수 항목이 누락되었을 때 경고 메시지를 띄워 데이터 전송 전 오류를 방지했습니다.
+
+```css
+:root {
+    --bg-color: #f9f9f9;
+    --section-bg: #ffffff;
+    --text-color: #414141;
+    --card-bg: #ffffff;
+    --section-tit: #65748e;
+}
+
+/* 다크 테마 */
+body.dark-mode {
+    --bg-color: #1a1a1a;
+    --section-bg: #252525;
+    --text-color: #f0f0f0;
+    --card-bg: #333333;
+    --section-tit: #9779c1;
+}
+```
+```javascript
+// 페이지 로드 시 상태 적용
+if (isDarkMode) {
+    body.classList.add('dark-mode');
+    if (toggleBtn) toggleBtn.textContent = '☀️'; // 다크모드면 해 아이콘
+} else {
+    if (toggleBtn) toggleBtn.textContent = '🌙'; // 라이트모드면 달 아이콘
+}
+
+//폼 유효성 검사 (Form Validation) 및 사용자 피드백
+const contactForm = document.getElementById('contact-form');
+
+// 폼이 존재할 때만 실행하도록 감싸줍니다.
+if(contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        
+        // 1. 이메일 형식을 검사하는 정규식
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if(name === "" || email === "") {
+            // 이름이나 이메일이 비어있을 때
+            alert("이름과 이메일을 모두 입력해주세요!");
+        } else if (!emailPattern.test(email)) {
+            // 이메일 형식이 올바르지 않을 때
+            alert("올바른 이메일 형식을 입력해주세요! (예: user@mail.com)");
+        } else {
+            // 모든 조건이 통과되었을 때
+            alert("메시지가 성공적으로 전송되었습니다!");
+            contactForm.reset();
+        }
+    });
+}
+```
+### 학습한 주요 용어
+- **LocalStorage**: 브라우저에 데이터를 반영구적으로 저장하는 저장소 (쿠키보다 용량이 크고 관리가 쉬움).
+- **상태 관리 (State Management)**: 현재 다크모드인지, 데이터가 로딩 중인지 등 앱의 현재 상황(상태)을 객체로 관리하는 개념.
+
+
+>## 7. 배포 (Deployment)
+
+### GitHub Pages를 통한 웹 게시
+- 버전 관리: Git을 사용하여 코드의 변경 이력을 기록하고 GitHub 원격 저장소에 푸시했습니다.
+- 정적 호스팅: GitHub Pages 기능을 활용하여 작성한 코드를 실제 웹사이트 주소로 배포 완료했습니다.
