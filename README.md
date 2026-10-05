@@ -459,3 +459,6 @@ if(contactForm) {
 ### GitHub Pages를 통한 웹 게시
 - 버전 관리: Git을 사용하여 코드의 변경 이력을 기록하고 GitHub 원격 저장소에 푸시했습니다.
 - 정적 호스팅: GitHub Pages 기능을 활용하여 작성한 코드를 실제 웹사이트 주소로 배포 완료했습니다.
+
+![다크모드 데스크탑 버전](./image/dark_d.png)
+![다크모드 모바일 버전](./image/dark_m.png)
