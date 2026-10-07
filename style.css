@@ -28,8 +28,6 @@ body.dark-mode {
 body {
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.6;
-    margin: 0;
-    padding: 0;
     background-color: var(--bg-color);
 }
 
@@ -47,7 +45,7 @@ nav {
     display: flex;
     align-items: center;           /* 세로 높이 중앙 맞춤 */
     padding: 15px 5%;              /* 상하 15px, 좌우 5% 여백 */
-    background-color: var(--header-bg); /* 배경색 */
+    background-color: #6c6c6c; /* 배경색 */
 }
 
 /* 2. .nav-links (ul 태그): 메뉴 항목들을 감싸는 상자 */
@@ -76,21 +74,19 @@ nav {
 /* 2. 햄버거 버튼 스타일 (여기에 추가) */
 .menu-toggle {
     display: none; /* PC에서는 안 보이게 */
-    flex-direction: column;
-    cursor: pointer;
 }
 
 .menu-toggle .bar {
-    width: 25px;
-    height: 3px;
+    width: 22px;
+    height: 2px;
     background-color: #ffffff;
-    margin: 4px 0;
+    margin: 2px 0;
     transition: 0.3s;
 }
 
 @media (max-width: 768px) {
     /* 1. 햄버거 버튼: 모바일에서 보이게 설정 */
-    .menu-toggle, .hamburger { 
+    .menu-toggle { 
         display: flex !important; 
         flex-direction: column;
         cursor: pointer;
@@ -98,36 +94,26 @@ nav {
         z-index: 1001; /* 메뉴보다 위에 있어야 클릭이 잘 됩니다 */
     }
 
-    /* 햄버거 막대기 모양 */
-    .menu-toggle span, .hamburger span {
-        display: block;
-        width: 25px;
-        height: 3px;
-        background-color: white; 
-    }
-
-    /* 2. 메뉴 리스트: 우측 60%만 차지하게 설정 */
     .nav-links {
-        display: none; /* 평소엔 숨김 */
+        display: none;
         flex-direction: column;
         position: absolute;
-        top: 60px;      /* 헤더 높이에 맞춰 조절 */
-        right: 0;       /* 우측 끝에 붙임 */
-        width: 60%;     /* ⭐ 화면의 60% 너비 */
-        height: auto;   /* 내용만큼 높이 조절 */
-        background-color: rgba(85, 85, 85, 0.98); /* 배경색 (약간 투명) */
+        top: 60px;
+        right: 0;
+        width: 60%;
+        height: auto;
+        background-color: rgba(85, 85, 85, 0.98);
         padding: 20px 0;
         z-index: 1000;
         text-align: center;
-        
-        /* 입체감을 위한 그림자와 둥근 모서리 */
-        box-shadow: -5px 5px 15px rgba(0,0,0,0.3);
-        border-radius: 0 0 0 15px; 
+
+        box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.3);
+        border-radius: 0 0 0 15px;
     }
 
-    /* 3. 활성화 상태: 버튼 클릭 시 나타남 */
+    /* 메뉴 열림 */
     .nav-links.active {
-        display: flex !important;
+        display: flex;
     }
 }
 
@@ -155,18 +141,18 @@ section.show {
 }
 
 section h2 {
-    margin: 0 0 32px;
+    margin: 0 0 30px;
 }
 
 .section-title {
     text-align: center;      /* 글자를 중앙으로 */
-    font-size: 1.5rem;       /* 크기를 크게 (원하는 대로 조절 가능) */
-    font-weight: 800;        /* 아주 두껍게 */
+    font-size: 2.5rem;       /* 크기를 크게 (원하는 대로 조절 가능) */
+    font-weight: 700;        /* 아주 두껍게 */
     margin-top: 100px;       /* 위쪽 섹션과의 간격 */
-    margin-bottom: 50px;     /* 아래쪽 본문과의 간격 */
-    letter-spacing: 2px;     /* 글자 사이 간격을 살짝 벌려 고급스럽게 */
+    margin-bottom: 3rem;     /* 아래쪽 본문과의 간격 */
+    letter-spacing: -0.02em;     /* 글자 사이 간격을 살짝 벌려 고급스럽게 */
     text-transform: uppercase; /* 소문자로 써도 대문자로 표시되게 함 */
-    color: var(--text-color);             /* 글자 색상 */
+    color: var(--section-tit);             /* 글자 색상 */
 }
 
 #hero {
@@ -184,7 +170,7 @@ section h2 {
     font-size: 3.1rem;    /* 텍스트 크기를 크게 키움 */
     font-weight: 600;     /* 두껍게 */
     line-height: 1.3;     /* 줄 간격 */
-    margin-bottom: 60px;  /* 이미지 그룹과의 간격 */
+    margin-bottom: 50px;  /* 이미지 그룹과의 간격 */
     letter-spacing: -1px; /* 글자 간격을 살짝 좁혀서 세련되게 */
     color: var(--text-color);   /* 진한 회색 */
 }
@@ -217,17 +203,8 @@ section h2 {
 .about-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 40px; /* 좌우 여백 */
 }
 
-.section-title {
-  font-size: 2.5rem;   /* 기존 5rem 기준 약 15% 감소 */
-  font-weight: 700;
-  color: var(--section-tit);       /* 원하는 색상 */
-  text-align: center;
-  margin-bottom: 3rem;
-  letter-spacing: -0.02em;
-}
 /* 가로 배치를 위한 플렉스 박스 */
 .about-content {
   display: grid;
@@ -238,7 +215,7 @@ section h2 {
 .about-text-box {
   max-width: 760px;
   margin-left: -4px;   /* 기존처럼 살짝 왼쪽 */
-  margin-top: 30px;    /* 텍스트를 아래로 내리기 */
+  margin-top: 20px;    /* 텍스트를 아래로 내리기 */
   position: relative;
   z-index: 2;          /* 겹칠 때 텍스트가 위로 */
 }
@@ -266,37 +243,37 @@ section h2 {
   background: var(--section-bg);
   padding: 10px 20px 100px;
 }
+
+.skills-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 /* 카드 3개 나란히 */
 .skills-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 이 부분이 3개로 되어 있을 거예요 */
-  gap: 20px;
-}
-
-.skills-container {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  width: 90%;          /* 부모가 부모의 부모만큼 꽉 차게 */
-  max-width: 1400px;    /* 전체 폭을 조금 더 넓혀보세요 */
-  margin: 0 auto;
+  gap: 30px;
 }
 
 .skill-card {
-  flex: 1;    
-  max-width: 500px; 
   height: 180px;
-  border: 2px solid #d9d9d9;
+  border: 1px solid #d9d9d9;
   border-radius: 24px;
-  box-sizing: border-box;
-  padding: 40px 30px;  
-
+  padding: 40px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+  transition: 0.3s; /* 호버 효과를 위해 추가 */
 }
+.skill-card:hover {
+    transform: translateY(-5px);
+    border: 1px solid #6a35c2;
+}
+
 .skill-card h3 {
   margin: 0 0 14px;
   font-size: 1.45rem;
@@ -304,12 +281,12 @@ section h2 {
   color: var(--text-color);
 }
 
+
 .skill-card p {
   margin: 0;
   font-size: 1.1rem;
   color: var(--text-color);
-  text-align: center;
-  white-space: nowrap;
+    /* white-space: nowrap; */ /* 글자가 길어지면 잘릴 수 있으니 주석 처리하거나 삭제 권장 */
 }
 
 #works {
@@ -533,6 +510,15 @@ section h2 {
     width: 100%;
     max-width: 600px; /* 폼 너비 확대 (500px -> 600px) */
     margin-top: 30px;
+}
+
+/* 라벨(이름, 이메일, 메시지) 글자색 설정 */
+#contact-form label {
+    color: var(--text-color); /* 다크모드 변수 적용 */
+    font-size: 16px;          /* 글자 크기 */
+    font-weight: 600;         /* 글자 두께 */
+    text-align: left;         /* 왼쪽 정렬 */
+    margin-bottom: -10px;     /* 입력창과 너무 멀면 조절 (선택사항) */
 }
 
 /* 3. 입력창 사이즈 및 폰트 확대 */

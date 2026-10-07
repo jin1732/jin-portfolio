@@ -102,8 +102,6 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.6;
-    margin: 0;
-    padding: 0;
     background-color: #f4f4f4;
 }
 
