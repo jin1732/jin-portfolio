@@ -31,21 +31,40 @@ const username = 'jin1732';
 const apiUrl = `https://api.github.com/users/${username}/repos?sort=updated`;
 
 async function getRepos() {
+    const loadingElement = document.getElementById('loading');
+    const projectGrid = document.getElementById('project-grid');
+
     try {
         const response = await fetch(apiUrl);
-        const repos = await response.json();
-
-        // 로딩 메시지 숨기기
-        const loadingElement = document.getElementById('loading');
-        if (loadingElement) {loadingElement.remove();
+        
+        // 응답 상태 확인 (404, 500 에러 등 방지)
+        if (!response.ok) {
+            throw new Error('데이터를 가져오는 데 실패했습니다.');
         }
 
+        const repos = await response.json();
+
+        // 1. 로딩 메시지 제거
+        if (loadingElement) {
+            loadingElement.remove();
+        }
+
+        // 2. 빈 상태(Empty State) 처리: 저장소가 0개일 때
+        if (repos.length === 0) {
+            projectGrid.innerHTML = '<p class="empty-message">공개된 GitHub 저장소가 없습니다.</p>';
+            return; 
+        }
+
+        // 3. 데이터가 있을 때만 화면에 표시
         displayRepos(repos);
+
     } catch (error) {
         console.error("에러 발생:", error);
-        const loadingElement = document.getElementById('loading');
+        // 에러 발생 시 사용자에게 알림
         if (loadingElement) {
-        loadingElement.innerText = "데이터를 불러오지 못했습니다.";
+            loadingElement.innerText = "데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.";
+        } else if (projectGrid) {
+            projectGrid.innerHTML = '<p class="error-message">데이터를 불러오지 못했습니다.</p>';
         }
     }
 }
