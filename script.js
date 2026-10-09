@@ -1,157 +1,164 @@
-// [1순위] 설정 확인 및 즉시 적용 (깜빡임 방지)
-const body = document.body;
+/**
+ * [상태 관리 패턴 적용]
+ * 1. State: 모든 데이터(상태)를 하나의 객체에서 관리
+ * 2. Render: 상태를 바탕으로 UI를 업데이트하는 함수들
+ * 3. Event: 사용자 상호작용 시 상태를 변경하고 Render 호출
+ */
+
+// --- 1. 상태(State) 정의 ---
+const state = {
+    isDarkMode: localStorage.getItem('darkMode') === 'enabled',
+    isMenuOpen: false,
+    repos: [],
+    repoStatus: 'loading', // 'loading', 'success', 'error', 'empty'
+    showScrollTop: false
+};
+
+// --- 2. UI 렌더링(Render) 함수들 ---
+const render = {
+    // 다크모드 UI 업데이트
+    theme() {
+        const toggleBtn = document.getElementById('dark-mode-toggle');
+        document.body.classList.toggle('dark-mode', state.isDarkMode);
+        if (toggleBtn) {
+            toggleBtn.textContent = state.isDarkMode ? '☀️' : '🌙';
+        }
+    },
+
+    // 햄버거 메뉴 UI 업데이트
+    menu() {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) {
+            navLinks.classList.toggle('active', state.isMenuOpen);
+        }
+    },
+
+    // 깃허브 프로젝트 리스트 업데이트
+    repos() {
+        const projectGrid = document.getElementById('project-grid');
+        const loadingElement = document.getElementById('loading');
+        if (!projectGrid) return;
+
+        // 상태에 따른 조건부 렌더링
+        if (state.repoStatus === 'loading') {
+            if (loadingElement) loadingElement.innerText = "데이터를 불러오는 중입니다...";
+        } else if (state.repoStatus === 'error') {
+            projectGrid.innerHTML = '<p class="error-message">데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</p>';
+        } else if (state.repoStatus === 'empty') {
+            projectGrid.innerHTML = '<p class="empty-message">공개된 GitHub 저장소가 없습니다.</p>';
+        } else {
+            // 성공 상태: filter와 map을 활용한 동적 HTML 생성
+            const cardHTML = state.repos
+                .filter(repo => repo.description !== null) // 설명이 있는 것만 표시
+                .map(repo => `
+                    <div class="project-card">
+                        <h3>${repo.name}</h3>
+                        <p>${repo.description || '설명이 없습니다.'}</p>
+                        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">자세히 보기</a>
+                    </div>
+                `).join('');
+            
+            projectGrid.innerHTML = cardHTML;
+            if (loadingElement) loadingElement.remove(); // 로딩 메시지 제거
+        }
+    },
+
+    // 스크롤 탑 버튼 업데이트
+    scroll() {
+        const scrollTopBtn = document.getElementById("scroll-top");
+        if (scrollTopBtn) {
+            scrollTopBtn.style.display = state.showScrollTop ? "block" : "none";
+        }
+    }
+};
+
+// --- 3. 이벤트 리스너 및 로직 ---
+
+// [초기화] 페이지 로드 시 테마 즉시 적용 (깜빡임 방지)
+render.theme();
+
+// [다크모드 토글]
 const toggleBtn = document.getElementById('dark-mode-toggle');
-const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
-
-// 페이지 로드 시 상태 적용
-if (isDarkMode) {
-    body.classList.add('dark-mode');
-    if (toggleBtn) toggleBtn.textContent = '☀️'; // 다크모드면 해 아이콘
-} else {
-    if (toggleBtn) toggleBtn.textContent = '🌙'; // 라이트모드면 달 아이콘
-}
-
-// [2순위] 클릭 이벤트 리스너
 if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
-        const isNowDark = body.classList.toggle('dark-mode');
-        
-        if (isNowDark) {
-            localStorage.setItem('darkMode', 'enabled');
-            toggleBtn.textContent = '☀️';
-        } else {
-            localStorage.setItem('darkMode', 'disabled');
-            toggleBtn.textContent = '🌙';
-        }
+        state.isDarkMode = !state.isDarkMode; // 1. 상태 변경
+        localStorage.setItem('darkMode', state.isDarkMode ? 'enabled' : 'disabled');
+        render.theme(); // 2. UI 업데이트
     });
 }
 
-// 데이터를 가져오는 함수
-const username = 'jin1732';
-const apiUrl = `https://api.github.com/users/${username}/repos?sort=updated`;
+// [햄버거 메뉴 토글]
+const menuToggle = document.querySelector('.menu-toggle');
+if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+        state.isMenuOpen = !state.isMenuOpen; // 1. 상태 변경
+        render.menu(); // 2. UI 업데이트
+    });
+}
 
+// [스크롤 이벤트]
+window.addEventListener('scroll', () => {
+    // 300px 이상 스크롤 시 버튼 표시 상태 변경
+    const shouldShow = window.scrollY > 300;
+    if (state.showScrollTop !== shouldShow) {
+        state.showScrollTop = shouldShow; // 1. 상태 변경
+        render.scroll(); // 2. UI 업데이트
+    }
+});
+
+// [스크롤 탑 클릭]
+document.getElementById("scroll-top")?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// [GitHub API 연동]
 async function getRepos() {
-    const loadingElement = document.getElementById('loading');
-    const projectGrid = document.getElementById('project-grid');
+    const username = 'jin1732';
+    const apiUrl = `https://api.github.com/users/${username}/repos?sort=updated`;
 
     try {
         const response = await fetch(apiUrl);
-        
-        // 응답 상태 확인 (404, 500 에러 등 방지)
-        if (!response.ok) {
-            throw new Error('데이터를 가져오는 데 실패했습니다.');
-        }
+        if (!response.ok) throw new Error('Network response was not ok');
 
-        const repos = await response.json();
-
-        // 1. 로딩 메시지 제거
-        if (loadingElement) {
-            loadingElement.remove();
-        }
-
-        // 2. 빈 상태(Empty State) 처리: 저장소가 0개일 때
-        if (repos.length === 0) {
-            projectGrid.innerHTML = '<p class="empty-message">공개된 GitHub 저장소가 없습니다.</p>';
-            return; 
-        }
-
-        // 3. 데이터가 있을 때만 화면에 표시
-        displayRepos(repos);
-
+        const data = await response.json();
+        state.repos = data; // 1. 상태 변경
+        state.repoStatus = data.length === 0 ? 'empty' : 'success';
     } catch (error) {
         console.error("에러 발생:", error);
-        // 에러 발생 시 사용자에게 알림
-        if (loadingElement) {
-            loadingElement.innerText = "데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.";
-        } else if (projectGrid) {
-            projectGrid.innerHTML = '<p class="error-message">데이터를 불러오지 못했습니다.</p>';
-        }
+        state.repoStatus = 'error'; // 1. 에러 상태 변경
+    } finally {
+        render.repos(); // 2. UI 업데이트
     }
 }
+getRepos();
 
-function displayRepos(repos) {
-    const projectGrid = document.getElementById('project-grid');
-    if (!projectGrid) return;
-
-    // 1. filter: 설명(description)이 있는 프로젝트만 골라내기
-    const filteredRepos = repos.filter(repo => repo.description !== null);
-
-    // 2. map: 데이터 배열을 HTML 문자열 배열로 변환하기
-    const cardHTML = filteredRepos.map(repo => `
-        <div class="project-card">
-            <h3>${repo.name}</h3>
-            <p>${repo.description || '설명이 없습니다.'}</p>
-            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">자세히 보기</a>
-        </div>
-    `).join(''); // 3. join: 배열을 하나의 긴 문자열로 합치기
-
-    // 4. 화면 업데이트: 한 번에 쏙 집어넣기
-    projectGrid.innerHTML = cardHTML;
-}
-getRepos() 
-
+// [Contact 폼 유효성 검사]
 const contactForm = document.getElementById('contact-form');
-
-// 폼이 존재할 때만 실행하도록 감싸줍니다.
-if(contactForm) {
+if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
-        
-        // 1. 이메일 형식을 검사하는 정규식
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if(name === "" || email === "") {
-            // 이름이나 이메일이 비어있을 때
+        if (name === "" || email === "") {
             alert("이름과 이메일을 모두 입력해주세요!");
         } else if (!emailPattern.test(email)) {
-            // 이메일 형식이 올바르지 않을 때
-            alert("올바른 이메일 형식을 입력해주세요! (예: user@mail.com)");
+            alert("올바른 이메일 형식을 입력해주세요!");
         } else {
-            // 모든 조건이 통과되었을 때
             alert("메시지가 성공적으로 전송되었습니다!");
             contactForm.reset();
         }
     });
 }
 
+// [스크롤 애니메이션] Intersection Observer
 const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('show'); // 화면에 보이면 'show' 클래스 추가
-        } else {
-            // (선택사항) 화면에서 벗어나면 다시 숨기고 싶을 때 아래 주석 해제
-            // entry.target.classList.remove('show'); 
+            entry.target.classList.add('show');
         }
     });
-});
+}, { threshold: 0.2 });
 
-// 모든 section 태그를 관찰 대상으로 등록
-const sections = document.querySelectorAll('section');
-sections.forEach((el) => observer.observe(el));
-
-// HTML에 있는 메뉴 버튼과 메뉴 리스트를 가져옵니다.
-const menuToggle = document.querySelector('.menu-toggle'); // 또는 .hamburger
-const navLinks = document.querySelector('.nav-links');
-
-// 버튼을 클릭했을 때 실행
-menuToggle.addEventListener('click', () => {
-    // nav-links에 active 클래스를 넣었다 뺐다(toggle) 합니다.
-    navLinks.classList.toggle('active');
-});
-
-const scrollTopBtn = document.getElementById("scroll-top");
-
-window.addEventListener('scroll', () => {
-    // 스크롤 값이 300보다 크면 보이고, 작으면 숨김
-    if (window.scrollY > 300) {
-        scrollTopBtn.style.display = "block";
-    } else {
-        scrollTopBtn.style.display = "none";
-    }
-});
-
-scrollTopBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-});
+document.querySelectorAll('section').forEach((el) => observer.observe(el));
