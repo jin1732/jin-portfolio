@@ -69,30 +69,26 @@ async function getRepos() {
     }
 }
 
-// 화면에 프로젝트를 그려주는 함수
 function displayRepos(repos) {
     const projectGrid = document.getElementById('project-grid');
     if (!projectGrid) return;
 
-    projectGrid.innerHTML = '';
+    // 1. filter: 설명(description)이 있는 프로젝트만 골라내기
+    const filteredRepos = repos.filter(repo => repo.description !== null);
 
-    repos.forEach(repo => {
-        // 2. 새로운 div(카드) 생성
-        const card = document.createElement('div');
-        // ★ 중요: 여기서 HTML에는 없던 'project-card' 클래스를 부여합니다!
-        card.className = 'project-card';
-
-        // 3. 카드 내부에 들어갈 내용 작성
-        card.innerHTML = `
+    // 2. map: 데이터 배열을 HTML 문자열 배열로 변환하기
+    const cardHTML = filteredRepos.map(repo => `
+        <div class="project-card">
             <h3>${repo.name}</h3>
             <p>${repo.description || '설명이 없습니다.'}</p>
-            <a href="${repo.html_url}" target="_blank">자세히 보기</a>
-        `;
-        // 4. 완성된 카드를 project-grid 안에 넣기
-        projectGrid.appendChild(card);
-    });
+            <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">자세히 보기</a>
+        </div>
+    `).join(''); // 3. join: 배열을 하나의 긴 문자열로 합치기
+
+    // 4. 화면 업데이트: 한 번에 쏙 집어넣기
+    projectGrid.innerHTML = cardHTML;
 }
-getRepos()
+getRepos() 
 
 const contactForm = document.getElementById('contact-form');
 
